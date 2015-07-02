@@ -17,8 +17,8 @@ import com.enderio.core.client.render.RenderUtil;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.render.ConduitBundleRenderer.FacadeAccessWrapper;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.painter.PaintedBlockAccessWrapper;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 
@@ -69,7 +69,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
       renderer.renderStandardBlock(block, x, y, z);
     } else {
       IBlockAccess origBa = renderer.blockAccess;
-      renderer.blockAccess = new FacadeAccessWrapper(origBa);
+      renderer.blockAccess = new PaintedBlockAccessWrapper(origBa);
       try {
         renderFrame(renderer.blockAccess, x, y, z, tecb, false, meta);
       } finally {

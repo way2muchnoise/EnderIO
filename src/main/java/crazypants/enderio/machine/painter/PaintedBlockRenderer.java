@@ -11,7 +11,6 @@ import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.conduit.render.ConduitBundleRenderer.FacadeAccessWrapper;
 
 public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -57,7 +56,7 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
     boolean isFacadeOpaque = srcBlk.isOpaqueCube();
 
     if (((isFacadeOpaque || srcBlk.canRenderInPass(0)) && pass == 0) || ((!isFacadeOpaque || srcBlk.canRenderInPass(1)) && pass == 1)) {
-      rb.blockAccess = new FacadeAccessWrapper(origBa);
+      rb.blockAccess = new PaintedBlockAccessWrapper(origBa);
       try {
         rb.renderBlockByRenderType(srcBlk, x, y, z);
       } catch (Exception e) {

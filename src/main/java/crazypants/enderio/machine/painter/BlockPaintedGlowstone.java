@@ -237,6 +237,11 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
   
   @Override
+  public int getRenderBlockPass() {
+    return 1;
+  }
+  
+  @Override
   public boolean canRenderInPass(int pass) {
     ForgeHooksClient.setRenderPass(pass);
     return pass == 0 || pass == 1;
