@@ -2,14 +2,18 @@ package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.base.Strings;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 
 public final class PainterUtil {
@@ -139,5 +143,15 @@ public final class PainterUtil {
       return (facadeMeta & 3) | dir;
     }
     return facadeMeta;
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public static boolean isBreakTextureOverride(RenderBlocks rb) {
+    return rb.hasOverrideBlockTexture() && rb.overrideBlockTexture.getIconName().startsWith("destroy_stage_");
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public static int getPassForPaintedRender(RenderBlocks rb) {
+    return isBreakTextureOverride(rb) ? 1 : MinecraftForgeClient.getRenderPass();
   }
 }

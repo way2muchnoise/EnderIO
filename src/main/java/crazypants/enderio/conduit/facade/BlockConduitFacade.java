@@ -45,9 +45,9 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
       return blockIcon;
     }
     IConduitBundle cb = (IConduitBundle) te;
-    Block block = cb.getFacadeId();
+    Block block = cb.getSourceBlock();
     if(block != null) {
-      int meta = cb.getFacadeMetadata();
+      int meta = cb.getSourceBlockMetadata();
       return block.getIcon(side, meta);
     }
     return blockIcon;
@@ -104,8 +104,8 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
       return;
     }
 
-    Block block = cb.getFacadeId();
-    int meta = cb.getFacadeMetadata();
+    Block block = cb.getSourceBlock();
+    int meta = cb.getSourceBlockMetadata();
     if(block == null || block == this) {
       return;
     }
@@ -127,8 +127,8 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
       return null;
     }
     IConduitBundle cb = (IConduitBundle) te;
-    Block id = cb.getFacadeId();
-    int meta = cb.getFacadeMetadata();
+    Block id = cb.getSourceBlock();
+    int meta = cb.getSourceBlockMetadata();
 
     if(id == null) {
       return null;

@@ -11,6 +11,7 @@ import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.conduit.render.ConduitBundleRenderer.FacadeAccessWrapper;
 
 public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -36,40 +37,45 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess ba, int x, int y, int z, Block block, int arg5, RenderBlocks rb) {
-
+    return renderWorldBlock(ba, x, y, z, block, arg5, rb, PainterUtil.getPassForPaintedRender(rb));
+  }
+  
+  public boolean renderWorldBlock(IBlockAccess ba, int x, int y, int z, Block block, int arg5, RenderBlocks rb, int pass) {
+    boolean res = false;
     TileEntity tile = ba.getTileEntity(x, y, z);
-    if(!(tile instanceof IPaintableTileEntity)) {
+    if (!(tile instanceof IPaintableTileEntity)) {
       return false;
     }
     IPaintableTileEntity te = (IPaintableTileEntity) tile;
     Block srcBlk = te.getSourceBlock();
-    if(srcBlk == null) {
+    if (srcBlk == null) {
       srcBlk = defaultBlock;
     }
 
     IBlockAccess origBa = rb.blockAccess;
-    try {      
-      rb.blockAccess = new PaintedBlockAccessWrapper(origBa);
-      if(srcBlk == block) {
-        rb.renderStandardBlock(srcBlk, x, y, z);
-      } else {
+    res = true;
+    boolean isFacadeOpaque = srcBlk.isOpaqueCube();
+
+    if (((isFacadeOpaque || srcBlk.canRenderInPass(0)) && pass == 0) || ((!isFacadeOpaque || srcBlk.canRenderInPass(1)) && pass == 1)) {
+      rb.blockAccess = new FacadeAccessWrapper(origBa);
+      try {
         rb.renderBlockByRenderType(srcBlk, x, y, z);
-      }      
-    } catch (Exception e) {
-      //just in case the paint source wont render safely in this way
-      rb.setOverrideBlockTexture(IconUtil.errorTexture);
-      rb.renderStandardBlock(Blocks.stone, x, y, z);
-      rb.setOverrideBlockTexture(null);
-    } finally {
+      } catch (Exception e) {
+        //just in case the paint source wont render safely in this way
+        rb.setOverrideBlockTexture(IconUtil.errorTexture);
+        rb.renderStandardBlock(Blocks.stone, x, y, z);
+        rb.setOverrideBlockTexture(null);
+      }
+
       rb.blockAccess = origBa;
     }
-
-    return true;
+    res = isFacadeOpaque;
+    return res;
   }
 
   @Override
   public boolean shouldRender3DInInventory(int arg0) {
-    return false;
+    return true;
   }
 
 }

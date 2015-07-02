@@ -32,13 +32,12 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if (ball == null) {
-      return;
+    if (ball != null) {
+      list.add(EnumChatFormatting.BLUE + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line1"));
+      list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
+      list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
+      list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line4") + toPercent(1 - ball.getPowerMultiplier()));
     }
-    list.add(EnumChatFormatting.BLUE + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line1"));
-    list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
-    list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
-    list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line4") + toPercent(1 - ball.getPowerMultiplier()));
   }
 
   private String toPercent(float fl) {

@@ -127,8 +127,8 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       Block facadeID = PainterUtil.getSourceBlock(itemStack);
       int facadeMeta = PainterUtil.getSourceBlockMetadata(itemStack);
       facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
-      bundle.setFacadeId(facadeID);
-      bundle.setFacadeMetadata(facadeMeta);
+      bundle.setSourceBlock(facadeID);
+      bundle.setSourceBlockMetadata(facadeMeta);
       bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
       ConduitUtil.playBreakSound(facadeID.stepSound, world, x, y, z);
       if (!player.capabilities.isCreativeMode) {

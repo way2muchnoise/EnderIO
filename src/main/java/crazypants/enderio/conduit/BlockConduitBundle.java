@@ -22,6 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -137,8 +138,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
     TileConduitBundle cb = (TileConduitBundle) world.getTileEntity(target.blockX, target.blockY, target.blockZ);
     if(ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
-      if(cb.getFacadeId() != null) {
-        tex = cb.getFacadeId().getIcon(target.sideHit, cb.getFacadeMetadata());
+      if(cb.getSourceBlock() != null) {
+        tex = cb.getSourceBlock().getIcon(target.sideHit, cb.getSourceBlockMetadata());
       }
     } else if(target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
@@ -253,10 +254,10 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       IConduit conduit = bundle.getConduit(cc.conduitType);
       if(conduit != null) {
         return conduit.createItem();
-      } else if(cc.conduitType == null && bundle.getFacadeId() != null) {
+      } else if(cc.conduitType == null && bundle.getSourceBlock() != null) {
         // use the facde
         ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
-        PainterUtil.setSourceBlock(fac, bundle.getFacadeId(), bundle.getFacadeMetadata());
+        PainterUtil.setSourceBlock(fac, bundle.getSourceBlock(), bundle.getSourceBlockMetadata());
         return fac;
       }
     }
@@ -270,7 +271,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return 0;
     }
     IConduitBundle bun = (IConduitBundle) te;
-    return bun.getFacadeId() != null ? bun.getFacadeMetadata() : 0;
+    return bun.getSourceBlock() != null ? bun.getSourceBlockMetadata() : 0;
   }
 
   @Override
@@ -337,7 +338,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return super.getLightValue(world, x, y, z);
     }
     IConduitBundle con = (IConduitBundle) te;
-    if(con.getFacadeId() != null && con.getFacadeId().isOpaqueCube()) {
+    if(con.getSourceBlock() != null && con.getSourceBlock().isOpaqueCube()) {
       return 0;
     }
     Collection<IConduit> conduits = con.getConduits();
@@ -388,7 +389,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   @SideOnly(Side.CLIENT)
   public boolean canRenderInPass(int pass) {
-    RenderUtil.theRenderPass = pass;
+    ForgeHooksClient.setRenderPass(pass);
     return pass == 0 || pass == 1;
   }
 
@@ -428,11 +429,11 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     if(ConduitUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
       ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, te.getFacadeType().ordinal());
-      PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
+      PainterUtil.setSourceBlock(fac, te.getSourceBlock(), te.getSourceBlockMetadata());
       drop.add(fac);
-      ConduitUtil.playBreakSound(te.getFacadeId().stepSound, world, x, y, z);
-      te.setFacadeId(null);
-      te.setFacadeMetadata(0);
+      ConduitUtil.playBreakSound(te.getSourceBlock().stepSound, world, x, y, z);
+      te.setSourceBlock(null);
+      te.setSourceBlockMetadata(0);
       te.setFacadeType(FacadeType.BASIC);
     }
 
@@ -676,8 +677,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     int facadeMeta = PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem());
     facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
 
-    bundle.setFacadeId(facadeID);
-    bundle.setFacadeMetadata(facadeMeta);
+    bundle.setSourceBlock(facadeID);
+    bundle.setSourceBlockMetadata(facadeMeta);
     bundle.setFacadeType(FacadeType.values()[player.getCurrentEquippedItem().getItemDamage()]);
     ConduitUtil.playBreakSound(facadeID.stepSound, world, x, y, z);
     if (!player.capabilities.isCreativeMode) {
@@ -695,13 +696,13 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return false;
     }
 
-    int oldMeta = bundle.getFacadeMetadata();
-    int newMeta = PainterUtil.rotateFacadeMetadata(bundle.getFacadeId(), oldMeta, axis);
+    int oldMeta = bundle.getSourceBlockMetadata();
+    int newMeta = PainterUtil.rotateFacadeMetadata(bundle.getSourceBlock(), oldMeta, axis);
     if(newMeta == oldMeta) {
       return false;
     }
 
-    bundle.setFacadeMetadata(newMeta);
+    bundle.setSourceBlockMetadata(newMeta);
     world.markBlockForUpdate(x, y, z);
     bundle.getEntity().markDirty();
     return true;
@@ -767,7 +768,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return;
     }
     IConduitBundle con = (IConduitBundle) te;
-    if(con.getFacadeId() != null) {
+    if(con.getSourceBlock() != null) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
     } else {
@@ -947,7 +948,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return 0;
     }
     IConduitBundle cb = (IConduitBundle) te;
-    return cb.getFacadeMetadata();
+    return cb.getSourceBlockMetadata();
   }
 
   @Override
@@ -957,7 +958,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return this;
     }
     IConduitBundle cb = (IConduitBundle) te;
-    Block res = cb.getFacadeId();
+    Block res = cb.getSourceBlock();
     if(res == null) {
       return this;
     }

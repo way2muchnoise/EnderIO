@@ -186,11 +186,11 @@ public class ConduitUtil {
   }
 
   public static boolean isSolidFacadeRendered(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() != null && !isFacadeHidden(bundle, player);
+    return bundle.getSourceBlock() != null && !isFacadeHidden(bundle, player);
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() != null && shouldHeldItemHideFacades(player);
+    return bundle.getSourceBlock() != null && shouldHeldItemHideFacades(player);
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {

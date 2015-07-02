@@ -19,6 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -233,6 +234,12 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   @Override
   public int getRenderType() {
     return renderId;
+  }
+  
+  @Override
+  public boolean canRenderInPass(int pass) {
+    ForgeHooksClient.setRenderPass(pass);
+    return pass == 0 || pass == 1;
   }
 
   public final class PainterTemplate extends BasicPainterTemplate {

@@ -9,7 +9,7 @@ public interface IPaintableTileEntity {
   int getSourceBlockMetadata();
 
   void setSourceBlock(Block sourceBlock);
-
+  
   Block getSourceBlock();
 
 }

@@ -150,7 +150,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public void setFacadeId(Block blockID, boolean triggerUpdate) {
+  public void setSourceBlock(Block blockID, boolean triggerUpdate) {
     this.facadeId = blockID;
     if(triggerUpdate) {
       facadeChanged = true;
@@ -158,17 +158,17 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public void setFacadeId(Block blockID) {
-    setFacadeId(blockID, true);
+  public void setSourceBlock(Block blockID) {
+    setSourceBlock(blockID, true);
   }
 
   @Override
-  public Block getFacadeId() {
+  public Block getSourceBlock() {
     return facadeId;
   }
 
   @Override
-  public void setFacadeMetadata(int meta) {
+  public void setSourceBlockMetadata(int meta) {
     facadeMeta = meta;
   }
   
@@ -178,7 +178,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public int getFacadeMetadata() {
+  public int getSourceBlockMetadata() {
     return facadeMeta;
   }
   

@@ -23,13 +23,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.power.IInternalPowerHandler;
 
 @InterfaceList({
     @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
     @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas")
 })
-public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
+public interface IConduitBundle extends IInternalPowerHandler, IPaintableTileEntity, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
 
   TileEntity getEntity();
 
@@ -96,21 +97,14 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, II
 
   boolean hasFacade();
 
-  void setFacadeId(Block block);
-
-  void setFacadeId(Block block, boolean triggerUpdate);
-
-  void setFacadeMetadata(int meta);
-
   void setFacadeType(FacadeType type);
-
-  Block getFacadeId();
-
-  int getFacadeMetadata();
 
   FacadeType getFacadeType();
 
   World getWorld();
 
   void setGridNode(Object node);
+
+  void setSourceBlock(Block sourceBlock, boolean triggerUpdate);
+
 }
