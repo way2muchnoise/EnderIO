@@ -100,10 +100,12 @@ import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.TileExperienceOblisk;
+import crazypants.enderio.machine.painter.BlockPaintedCarpet;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
 import crazypants.enderio.machine.painter.PaintedBlockRenderer;
+import crazypants.enderio.machine.painter.PaintedCarpetRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.power.CapBankRenderer2;
@@ -349,6 +351,9 @@ public class ClientProxy extends CommonProxy {
     BlockPaintedGlowstone.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockPaintedGlowstone.renderId, Blocks.glowstone));
 
+    BlockPaintedCarpet.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new PaintedCarpetRenderer(BlockPaintedCarpet.renderId, Blocks.wool));
+    
     BlockTravelAnchor.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockTravelAnchor.renderId, EnderIO.blockTravelPlatform));
 

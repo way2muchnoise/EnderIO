@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
 import cpw.mods.fml.relauncher.Side;
@@ -11,13 +12,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
-  public PaintedBlockAccessWrapper(IBlockAccess ba) {
+  private BlockCoord pos;
+  
+  public PaintedBlockAccessWrapper(IBlockAccess ba, BlockCoord pos) {
     super(ba);
+    this.pos = pos;
   }
 
   @Override
   public Block getBlock(int x, int y, int z) {
     Block res = super.getBlock(x, y, z);
+//    if (!pos.equals(x, y, z)) {
+//      return res;
+//    }
     TileEntity te = getTileEntity(x, y, z);
     if(te instanceof IPaintableTileEntity) {
       IPaintableTileEntity tcb = (IPaintableTileEntity) te;
@@ -38,6 +45,9 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   @Override
   public int getBlockMetadata(int x, int y, int z) {
     TileEntity te = getTileEntity(x, y, z);
+//    if (!pos.equals(x, y, z)) {
+//      return super.getBlockMetadata(x, y, z);
+//    }
     if(te instanceof IPaintableTileEntity) {
       IPaintableTileEntity tcb = (IPaintableTileEntity) te;
       Block fac = tcb.getSourceBlock();

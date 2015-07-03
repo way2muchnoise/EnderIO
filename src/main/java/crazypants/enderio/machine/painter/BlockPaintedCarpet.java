@@ -20,6 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -31,6 +32,8 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 
 public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintedBlock {
 
+  public static int renderId;
+  
   public static BlockPaintedCarpet create() {
     BlockPaintedCarpet result = new BlockPaintedCarpet();
     result.init();
@@ -157,7 +160,22 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
         z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
     digFX.setParticleIcon(tex);
     effectRenderer.addEffect(digFX);
+  }
+  
+  @Override
+  public int getRenderType() {
+    return renderId;
+  }
 
+  @Override
+  public int getRenderBlockPass() {
+    return 1;
+  }
+  
+  @Override
+  public boolean canRenderInPass(int pass) {
+    ForgeHooksClient.setRenderPass(pass);
+    return pass == 0 || pass == 1;
   }
 
   @Override

@@ -22,6 +22,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -241,7 +244,7 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
-        PaintedBlockAccessWrapper ba = new PaintedBlockAccessWrapper(world);
+        PaintedBlockAccessWrapper ba = new PaintedBlockAccessWrapper(world, new BlockCoord(te));
         return tef.getSourceBlock().colorMultiplier(ba, x, y, z);
       }
     }

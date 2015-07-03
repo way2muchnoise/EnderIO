@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import com.enderio.core.common.util.BlockCoord;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
@@ -33,7 +35,7 @@ public class BlockPaintedGlowstoneRenderer implements ISimpleBlockRenderingHandl
     }
 
     IBlockAccess origBa = rb.blockAccess;
-    rb.blockAccess = new PaintedBlockAccessWrapper(origBa);
+    rb.blockAccess = new PaintedBlockAccessWrapper(origBa, new BlockCoord(te));
     rb.renderBlockByRenderType(srcBlk, x, y, z);
     rb.blockAccess = origBa;
 

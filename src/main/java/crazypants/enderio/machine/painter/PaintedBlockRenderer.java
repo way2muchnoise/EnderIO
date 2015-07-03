@@ -2,13 +2,12 @@ package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
-import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
@@ -29,9 +28,9 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block blk, int meta, int modelId, RenderBlocks arg3) {
-    Tessellator.instance.startDrawingQuads();
-    CubeRenderer.render(blk, meta);
-    Tessellator.instance.draw();
+//    Tessellator.instance.startDrawingQuads();
+//    CubeRenderer.render(blk, meta);
+//    Tessellator.instance.draw();
   }
 
   @Override
@@ -52,11 +51,10 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
     }
 
     IBlockAccess origBa = rb.blockAccess;
-    res = true;
     boolean isFacadeOpaque = srcBlk.isOpaqueCube();
 
     if (((isFacadeOpaque || srcBlk.canRenderInPass(0)) && pass == 0) || ((!isFacadeOpaque || srcBlk.canRenderInPass(1)) && pass == 1)) {
-      rb.blockAccess = new PaintedBlockAccessWrapper(origBa);
+      rb.blockAccess = new PaintedBlockAccessWrapper(origBa, new BlockCoord(tile));
       try {
         rb.renderBlockByRenderType(srcBlk, x, y, z);
       } catch (Exception e) {
@@ -67,8 +65,8 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
       }
 
       rb.blockAccess = origBa;
+      res = true;
     }
-    res = isFacadeOpaque;
     return res;
   }
 

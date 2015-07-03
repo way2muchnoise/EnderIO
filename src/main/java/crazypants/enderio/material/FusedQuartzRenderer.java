@@ -14,6 +14,7 @@ import com.enderio.core.client.render.ConnectedTextureRenderer;
 import com.enderio.core.client.render.ConnectedTextureRenderer.DefaultTextureCallback;
 import com.enderio.core.client.render.CustomCubeRenderer;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
@@ -69,7 +70,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
       renderer.renderStandardBlock(block, x, y, z);
     } else {
       IBlockAccess origBa = renderer.blockAccess;
-      renderer.blockAccess = new PaintedBlockAccessWrapper(origBa);
+      renderer.blockAccess = new PaintedBlockAccessWrapper(origBa, new BlockCoord(te));
       try {
         renderFrame(renderer.blockAccess, x, y, z, tecb, false, meta);
       } finally {
