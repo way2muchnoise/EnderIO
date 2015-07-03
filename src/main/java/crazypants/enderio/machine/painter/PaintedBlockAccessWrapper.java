@@ -22,9 +22,9 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   @Override
   public Block getBlock(int x, int y, int z) {
     Block res = super.getBlock(x, y, z);
-//    if (!pos.equals(x, y, z)) {
-//      return res;
-//    }
+    if (!pos.equals(x, y, z)) {
+      return res;
+    }
     TileEntity te = getTileEntity(x, y, z);
     if(te instanceof IPaintableTileEntity) {
       IPaintableTileEntity tcb = (IPaintableTileEntity) te;
@@ -45,9 +45,9 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   @Override
   public int getBlockMetadata(int x, int y, int z) {
     TileEntity te = getTileEntity(x, y, z);
-//    if (!pos.equals(x, y, z)) {
-//      return super.getBlockMetadata(x, y, z);
-//    }
+    if (!pos.equals(x, y, z)) {
+      return super.getBlockMetadata(x, y, z);
+    }
     if(te instanceof IPaintableTileEntity) {
       IPaintableTileEntity tcb = (IPaintableTileEntity) te;
       Block fac = tcb.getSourceBlock();

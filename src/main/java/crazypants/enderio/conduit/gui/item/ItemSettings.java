@@ -399,7 +399,7 @@ public class ItemSettings extends BaseSettingsPanel {
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
     if(outputActive) {
       GL11.glColor3f(1, 1, 1);
-      IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
+      EnderWidget.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
       String str = itemConduit.getOutputPriority(gui.getDir()) + "";
       int sw = fr.getStringWidth(str);
       fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));
