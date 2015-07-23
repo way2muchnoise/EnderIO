@@ -125,7 +125,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
     boolean renderConduit = !renderedFacade || ConduitUtil.isFacadeHidden(bundle, player);
 
-    if(renderConduit && (ForgeHooksClient.getWorldRenderPass() == 0 || rb.overrideBlockTexture != null)) {
+    if(renderConduit && (ForgeHooksClient.getWorldRenderPass() <= 0 || rb.overrideBlockTexture != null)) {
       BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
@@ -163,7 +163,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         boolean isFacadeOpaque = facadeId.isOpaqueCube();
 
-        if((isFacadeOpaque && ForgeHooksClient.getWorldRenderPass() == 0) ||
+        if((isFacadeOpaque && ForgeHooksClient.getWorldRenderPass() <= 0) ||
             (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && ForgeHooksClient.getWorldRenderPass() == 1))) {
           IBlockAccess origBa = rb.blockAccess;
           rb.blockAccess = new FacadeAccessWrapper(origBa);

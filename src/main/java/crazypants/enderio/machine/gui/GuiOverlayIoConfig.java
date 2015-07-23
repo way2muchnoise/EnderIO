@@ -28,12 +28,12 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
   private IGuiScreen screen;
 
-  private Rectangle bounds;
-  int height = 80;
+  protected Rectangle bounds;
+  protected int height = 80;
 
-  private IoConfigRenderer renderer;
+  protected IoConfigRenderer renderer;
 
-  private List<BlockCoord> coords = new ArrayList<BlockCoord>();
+  protected List<BlockCoord> coords = new ArrayList<BlockCoord>();
 
   public GuiOverlayIoConfig(IIoConfigurable ioConf) {
     coords.add(ioConf.getLocation());
@@ -79,7 +79,6 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
     int h = bounds.height * scaledresolution.getScaleFactor();
 
     renderer.drawScreen(mouseX, mouseY, partialTick, new Rectangle(vpx,vpy,w,h), bounds);
-
   }
 
   @Override
